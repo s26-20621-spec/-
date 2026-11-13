@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>단합대회 할 일 모으기</title>
+  <title>단합대회 할 일 모으기 & 현서 패기</title>
   <style>
     :root {
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
+      --danger: #e11d48;
+      --danger-hover: #be123c;
       --bg: #f8fafc;
       --card: #ffffff;
       --text: #0f172a;
@@ -28,7 +30,7 @@
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.5;
-      padding: 24px 16px 60px;
+      padding: 20px 16px 64px;
     }
 
     .container {
@@ -36,14 +38,55 @@
       margin: 0 auto;
     }
 
+    /* 상단 탭 네비게이션 */
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #e2e8f0;
+      padding: 5px;
+      border-radius: 14px;
+      margin-bottom: 22px;
+    }
+
+    .nav-tab {
+      border: none;
+      background: transparent;
+      padding: 11px 12px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .nav-tab.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    }
+
+    .nav-tab.hit-tab.active {
+      color: var(--danger);
+    }
+
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
     header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.48rem;
+      font-weight: 800;
       margin-bottom: 6px;
     }
 
@@ -58,7 +101,7 @@
       border-radius: 14px;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .form-group {
@@ -120,7 +163,7 @@
     }
 
     textarea {
-      min-height: 110px;
+      min-height: 105px;
       resize: vertical;
     }
 
@@ -132,7 +175,7 @@
       border: none;
       border-radius: 10px;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: background 0.15s;
     }
@@ -154,7 +197,7 @@
       background: var(--success-bg);
       color: var(--success-text);
       font-size: 0.9rem;
-      font-weight: 500;
+      font-weight: 600;
       text-align: center;
     }
 
@@ -182,7 +225,7 @@
       color: #334155;
       padding: 2px 9px;
       border-radius: 999px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .refresh-btn {
@@ -246,84 +289,442 @@
       border: 1px dashed var(--border);
       border-radius: 12px;
     }
+
+    /* ================= 현서 패기 페이지 스타일 ================= */
+    .hit-header h1 {
+      color: var(--danger);
+    }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #9f1239;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--danger);
+    }
+
+    .weapon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .weapon-btn {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.12s;
+      font-family: inherit;
+    }
+
+    .weapon-btn .w-icon {
+      display: block;
+      font-size: 1.35rem;
+      margin-bottom: 2px;
+    }
+
+    .weapon-btn .w-name {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .weapon-btn .w-dmg {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .weapon-btn.active {
+      background: #fff1f2;
+      border-color: var(--danger);
+      box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.15);
+    }
+
+    .arena {
+      position: relative;
+      background: radial-gradient(circle at center, #fff1f2 0%, #ffe4e6 100%);
+      border: 2px solid #fda4af;
+      border-radius: 18px;
+      padding: 28px 16px 24px;
+      text-align: center;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      overflow: hidden;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+
+    .arena:active {
+      transform: scale(0.99);
+    }
+
+    .combo-badge {
+      display: inline-block;
+      background: var(--danger);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 3px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.15s;
+    }
+
+    .combo-badge.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .target-avatar {
+      width: 132px;
+      height: 132px;
+      margin: 0 auto 12px;
+      background: #ffffff;
+      border: 4px solid #fb7185;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(225, 29, 72, 0.18);
+      transition: transform 0.06s ease;
+    }
+
+    .target-avatar.hit-shake {
+      animation: punchShake 0.22s ease;
+      background: #fecdd3;
+      border-color: var(--danger);
+    }
+
+    @keyframes punchShake {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      20% { transform: translate(-12px, -6px) rotate(-10deg) scale(0.92); }
+      40% { transform: translate(12px, 4px) rotate(10deg) scale(0.94); }
+      60% { transform: translate(-8px, 3px) rotate(-6deg) scale(0.96); }
+      80% { transform: translate(6px, -2px) rotate(4deg) scale(0.98); }
+      100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    }
+
+    .target-face {
+      font-size: 3.4rem;
+      line-height: 1.1;
+    }
+
+    .target-name-tag {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #881337;
+      margin-top: 2px;
+    }
+
+    .target-speech {
+      display: inline-block;
+      background: #ffffff;
+      border: 1px solid #fecdd3;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #9f1239;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .arena-hint {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: #9f1239;
+      opacity: 0.8;
+    }
+
+    .floating-fx {
+      position: absolute;
+      pointer-events: none;
+      font-weight: 900;
+      font-size: 1.25rem;
+      color: var(--danger);
+      text-shadow: 0 2px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+      animation: floatUp 0.65s ease-out forwards;
+      z-index: 10;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.7);
+      }
+      40% {
+        opacity: 1;
+        transform: translate(-50%, -110%) scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -170%) scale(1);
+      }
+    }
+
+    .arena-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .sound-toggle {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .sync-status {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .rank-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
+    .rank-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rank-medal {
+      font-weight: 800;
+      font-size: 0.95rem;
+      min-width: 28px;
+      color: var(--danger);
+    }
+
+    .rank-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .rank-hits {
+      font-weight: 800;
+      color: var(--danger);
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>단합대회 할 일 모으기</h1>
-      <p>하고 싶은 활동, 게임, 맛집 등 자유롭게 적어주세요!</p>
-    </header>
+    <!-- 상단 탭 메뉴 -->
+    <nav class="nav-tabs">
+      <button type="button" class="nav-tab active" data-target="ideasPage">📋 단합대회 할 일</button>
+      <button type="button" class="nav-tab hit-tab" data-target="hitPage">🥊 현서 패기</button>
+    </nav>
 
-    <div class="card">
-      <form id="ideaForm">
-        <div class="form-group">
+    <!-- ================= 1페이지: 단합대회 할 일 모으기 ================= -->
+    <div id="ideasPage" class="page-section active">
+      <header>
+        <h1>단합대회 할 일 모으기</h1>
+        <p>하고 싶은 활동, 게임, 맛집 등 자유롭게 적어주세요!</p>
+      </header>
+
+      <div class="card">
+        <form id="ideaForm">
+          <div class="form-group">
+            <div class="label-row">
+              <label for="nickname">별명</label>
+              <label class="anon-check">
+                <input type="checkbox" id="isAnonymous" />
+                익명으로 작성
+              </label>
+            </div>
+            <input
+              type="text"
+              id="nickname"
+              maxlength="20"
+              placeholder="별명을 입력하세요 (비워두면 익명)"
+            />
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="content">하고 싶은 일 / 아이디어</label>
+            </div>
+            <textarea
+              id="content"
+              required
+              placeholder="예: 보드게임 대회, 바베큐 파티, 팀별 퀴즈쇼 등"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">등록하기</button>
+          <div class="toast" id="toast">시트에 등록되었습니다!</div>
+        </form>
+      </div>
+
+      <section>
+        <div class="list-header">
+          <div class="list-title-wrap">
+            <h2>모인 아이디어</h2>
+            <span class="count-badge" id="ideaCount">0개</span>
+          </div>
+          <button type="button" class="refresh-btn" id="refreshBtn">새로고침</button>
+        </div>
+        <div id="ideaList" class="idea-list">
+          <div class="empty-state">불러오는 중...</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================= 2페이지: 현서 패기 ================= -->
+    <div id="hitPage" class="page-section">
+      <header class="hit-header">
+        <h1>🥊 현서 패기 (스트레스 해소)</h1>
+        <p>현서를 마구 클릭해서 스트레스를 날려버리세요! (시트 자동 집계)</p>
+      </header>
+
+      <div class="card">
+        <div class="form-group" style="margin-bottom: 14px;">
           <div class="label-row">
-            <label for="nickname">별명</label>
+            <label for="hitNickname">내 별명 (랭킹 기록용)</label>
             <label class="anon-check">
-              <input type="checkbox" id="isAnonymous" />
-              익명으로 작성
+              <input type="checkbox" id="hitAnonymous" />
+              익명으로 패기
             </label>
           </div>
           <input
             type="text"
-            id="nickname"
+            id="hitNickname"
             maxlength="20"
             placeholder="별명을 입력하세요 (비워두면 익명)"
           />
         </div>
 
-        <div class="form-group">
-          <div class="label-row">
-            <label for="content">하고 싶은 일 / 아이디어</label>
+        <div class="stats-bar">
+          <div class="stat-box">
+            <div class="stat-label">전체 누적 타격수</div>
+            <div class="stat-value" id="totalHitsDisplay">0대</div>
           </div>
-          <textarea
-            id="content"
-            required
-            placeholder="예: 보드게임 대회, 바베큐 파티, 팀별 퀴즈쇼 등"
-          ></textarea>
+          <div class="stat-box">
+            <div class="stat-label">이번 세션 내 타격</div>
+            <div class="stat-value" id="sessionHitsDisplay">0대</div>
+          </div>
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">등록하기</button>
-        <div class="toast" id="toast">시트에 등록되었습니다!</div>
-      </form>
+        <!-- 무기 선택 -->
+        <div class="weapon-grid" id="weaponGrid">
+          <button type="button" class="weapon-btn active" data-power="1" data-fx="짝! 👋" data-sound="slap">
+            <span class="w-icon">👋</span>
+            <span class="w-name">맨손 스매싱</span>
+            <span class="w-dmg">+1타</span>
+          </button>
+          <button type="button" class="weapon-btn" data-power="2" data-fx="찰싹! 🩴" data-sound="slap">
+            <span class="w-icon">🩴</span>
+            <span class="w-name">삼선 슬리퍼</span>
+            <span class="w-dmg">+2타</span>
+          </button>
+          <button type="button" class="weapon-btn" data-power="3" data-fx="뿅! 🔨" data-sound="bonk">
+            <span class="w-icon">🔨</span>
+            <span class="w-name">대왕 뿅망치</span>
+            <span class="w-dmg">+3타</span>
+          </button>
+          <button type="button" class="weapon-btn" data-power="5" data-fx="콰직!! 💥" data-sound="crit">
+            <span class="w-icon">💥</span>
+            <span class="w-name">풀파워 펀치</span>
+            <span class="w-dmg">+5타</span>
+          </button>
+        </div>
+
+        <!-- 타격 영역 -->
+        <div class="arena" id="hitArena">
+          <div>
+            <span class="combo-badge" id="comboBadge">0 COMBO!</span>
+          </div>
+          <div class="target-avatar" id="targetAvatar">
+            <div class="target-face" id="targetFace">😎</div>
+            <div class="target-name-tag">현서</div>
+          </div>
+          <div>
+            <span class="target-speech" id="targetSpeech">"어디 한번 때려보든가~"</span>
+          </div>
+          <div class="arena-hint">현서를 빠르게 연타해 보세요!</div>
+        </div>
+
+        <div class="arena-controls">
+          <button type="button" class="sound-toggle" id="soundToggle">🔊 효과음 켜짐</button>
+          <span class="sync-status" id="syncStatus">시트 연동 대기 중</span>
+        </div>
+      </div>
+
+      <!-- 최다 타격 랭킹 -->
+      <section>
+        <div class="list-header">
+          <div class="list-title-wrap">
+            <h2>🏆 현서 패기 랭킹</h2>
+          </div>
+          <button type="button" class="refresh-btn" id="refreshRankBtn">랭킹 새로고침</button>
+        </div>
+        <div id="rankingList" class="idea-list">
+          <div class="empty-state">랭킹 불러오는 중...</div>
+        </div>
+      </section>
     </div>
-
-    <section>
-      <div class="list-header">
-        <div class="list-title-wrap">
-          <h2>모인 아이디어</h2>
-          <span class="count-badge" id="ideaCount">0개</span>
-        </div>
-        <button type="button" class="refresh-btn" id="refreshBtn">새로고침</button>
-      </div>
-      <div id="ideaList" class="idea-list">
-        <div class="empty-state">불러오는 중...</div>
-      </div>
-    </section>
   </div>
 
   <script>
-    const form = document.getElementById('ideaForm');
-    const isAnonymousCheckbox = document.getElementById('isAnonymous');
-    const nicknameInput = document.getElementById('nickname');
-    const contentInput = document.getElementById('content');
-    const submitBtn = document.getElementById('submitBtn');
-    const toast = document.getElementById('toast');
-    const ideaList = document.getElementById('ideaList');
-    const ideaCount = document.getElementById('ideaCount');
-    const refreshBtn = document.getElementById('refreshBtn');
+    /* ================= 탭 전환 로직 ================= */
+    const navTabs = document.querySelectorAll('.nav-tab');
+    const pageSections = document.querySelectorAll('.page-section');
 
-    isAnonymousCheckbox.addEventListener('change', () => {
-      if (isAnonymousCheckbox.checked) {
-        nicknameInput.dataset.prev = nicknameInput.value;
-        nicknameInput.value = '익명';
-        nicknameInput.disabled = true;
-      } else {
-        nicknameInput.disabled = false;
-        nicknameInput.value = nicknameInput.dataset.prev || '';
-        nicknameInput.focus();
-      }
+    navTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetId = tab.dataset.target;
+        navTabs.forEach(t => t.classList.remove('active'));
+        pageSections.forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+
+        if (targetId === 'hitPage') {
+          loadHitStats();
+        }
+      });
     });
 
     function escapeHtml(str) {
@@ -334,6 +735,61 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
     }
+
+    /* ================= 1페이지: 단합대회 할 일 로직 ================= */
+    const form = document.getElementById('ideaForm');
+    const isAnonymousCheckbox = document.getElementById('isAnonymous');
+    const nicknameInput = document.getElementById('nickname');
+    const contentInput = document.getElementById('content');
+    const submitBtn = document.getElementById('submitBtn');
+    const toast = document.getElementById('toast');
+    const ideaList = document.getElementById('ideaList');
+    const ideaCount = document.getElementById('ideaCount');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    // 두 페이지 간 별명 입력 동기화
+    const hitAnonymousCheckbox = document.getElementById('hitAnonymous');
+    const hitNicknameInput = document.getElementById('hitNickname');
+
+    function syncAnonState(isAnon, sourceInput, targetInput, targetCheckbox) {
+      targetCheckbox.checked = isAnon;
+      if (isAnon) {
+        sourceInput.dataset.prev = sourceInput.value;
+        targetInput.dataset.prev = targetInput.value;
+        sourceInput.value = '익명';
+        targetInput.value = '익명';
+        sourceInput.disabled = true;
+        targetInput.disabled = true;
+      } else {
+        sourceInput.disabled = false;
+        targetInput.disabled = false;
+        const restored = sourceInput.dataset.prev || targetInput.dataset.prev || '';
+        sourceInput.value = restored;
+        targetInput.value = restored;
+      }
+    }
+
+    isAnonymousCheckbox.addEventListener('change', () => {
+      syncAnonState(isAnonymousCheckbox.checked, nicknameInput, hitNicknameInput, hitAnonymousCheckbox);
+      if (!isAnonymousCheckbox.checked) nicknameInput.focus();
+    });
+
+    hitAnonymousCheckbox.addEventListener('change', () => {
+      syncAnonState(hitAnonymousCheckbox.checked, hitNicknameInput, nicknameInput, isAnonymousCheckbox);
+      if (!hitAnonymousCheckbox.checked) hitNicknameInput.focus();
+    });
+
+    nicknameInput.addEventListener('input', () => {
+      if (!isAnonymousCheckbox.checked) {
+        hitNicknameInput.value = nicknameInput.value;
+      }
+    });
+
+    hitNicknameInput.addEventListener('input', () => {
+      if (!hitAnonymousCheckbox.checked) {
+        nicknameInput.value = hitNicknameInput.value;
+      }
+    });
 
     function renderIdeas(ideas) {
       ideaCount.textContent = `${ideas.length}개`;
@@ -413,7 +869,254 @@
         .submitIdea(payload);
     });
 
-    document.addEventListener('DOMContentLoaded', loadIdeas);
+    /* ================= 2페이지: 현서 패기 미니게임 로직 ================= */
+    const hitArena = document.getElementById('hitArena');
+    const targetAvatar = document.getElementById('targetAvatar');
+    const targetFace = document.getElementById('targetFace');
+    const targetSpeech = document.getElementById('targetSpeech');
+    const comboBadge = document.getElementById('comboBadge');
+    const totalHitsDisplay = document.getElementById('totalHitsDisplay');
+    const sessionHitsDisplay = document.getElementById('sessionHitsDisplay');
+    const syncStatus = document.getElementById('syncStatus');
+    const rankingList = document.getElementById('rankingList');
+    const refreshRankBtn = document.getElementById('refreshRankBtn');
+    const soundToggle = document.getElementById('soundToggle');
+    const weaponBtns = document.querySelectorAll('.weapon-btn');
+
+    let currentWeapon = { power: 1, fx: '짝! 👋', sound: 'slap' };
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    let serverTotalHits = 0;
+    let sessionHits = 0;
+    let pendingHits = 0;
+    let isSyncing = false;
+    let syncTimer = null;
+
+    let comboCount = 0;
+    let comboTimer = null;
+    let faceResetTimer = null;
+
+    const hitReactions = [
+      { face: '😵', speech: '"억!! 잘못했습니다!!"' },
+      { face: '🤕', speech: '"아파요!! 살려주세요!!"' },
+      { face: '😭', speech: '"제가 다 쏠게요 그만 때려요!!"' },
+      { face: '🥴', speech: '"별이 보여요... 💫"' },
+      { face: '😱', speech: '"으아악!! 연속 콤보 멈춰!!"' },
+      { face: '💀', speech: '"현서가 기절 직전입니다..."' }
+    ];
+
+    weaponBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        weaponBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentWeapon = {
+          power: Number(btn.dataset.power) || 1,
+          fx: btn.dataset.fx || '퍽!',
+          sound: btn.dataset.sound || 'slap'
+        };
+      });
+    });
+
+    soundToggle.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      soundToggle.textContent = soundEnabled ? '🔊 효과음 켜짐' : '🔇 효과음 꺼짐';
+    });
+
+    function playHitSound(type) {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const now = audioCtx.currentTime;
+
+        if (type === 'bonk') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(110, now + 0.14);
+        } else if (type === 'crit') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(180, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.22);
+        } else {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(240, now);
+          osc.frequency.exponentialRampToValueAtTime(70, now + 0.1);
+        }
+
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.23);
+      } catch (e) {
+        // 오디오 차단 환경 무시
+      }
+    }
+
+    function spawnFloatingText(x, y, text) {
+      const el = document.createElement('div');
+      el.className = 'floating-fx';
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.textContent = text;
+      hitArena.appendChild(el);
+      setTimeout(() => el.remove(), 660);
+    }
+
+    function updateHitCounters() {
+      totalHitsDisplay.textContent = `${(serverTotalHits + pendingHits).toLocaleString()}대`;
+      sessionHitsDisplay.textContent = `${sessionHits.toLocaleString()}대`;
+    }
+
+    function flushHits() {
+      if (pendingHits <= 0 || isSyncing) return;
+
+      const countToSend = pendingHits;
+      pendingHits = 0;
+      isSyncing = true;
+      syncStatus.textContent = '시트에 타격 기록 저장 중...';
+
+      google.script.run
+        .withSuccessHandler(stats => {
+          isSyncing = false;
+          serverTotalHits = stats.totalHits;
+          updateHitCounters();
+          renderRanking(stats.ranking);
+          syncStatus.textContent = '시트 저장 완료!';
+
+          if (pendingHits > 0) {
+            flushHits();
+          }
+        })
+        .withFailureHandler(() => {
+          isSyncing = false;
+          pendingHits += countToSend;
+          syncStatus.textContent = '저장 재시도 대기 중...';
+        })
+        .recordHits({
+          isAnonymous: hitAnonymousCheckbox.checked,
+          nickname: hitNicknameInput.value,
+          count: countToSend
+        });
+    }
+
+    hitArena.addEventListener('click', e => {
+      const rect = hitArena.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const power = currentWeapon.power;
+      sessionHits += power;
+      pendingHits += power;
+      comboCount += 1;
+
+      updateHitCounters();
+      playHitSound(currentWeapon.sound);
+
+      // 아바타 흔들림 효과 재시작
+      targetAvatar.classList.remove('hit-shake');
+      void targetAvatar.offsetWidth;
+      targetAvatar.classList.add('hit-shake');
+
+      // 표정 및 대사 업데이트
+      const reactionIndex = comboCount >= 30
+        ? 5
+        : comboCount >= 15
+          ? 4
+          : Math.floor(Math.random() * 4);
+      const reaction = hitReactions[reactionIndex];
+      targetFace.textContent = reaction.face;
+      targetSpeech.textContent = reaction.speech;
+
+      // 콤보 배지 표시
+      comboBadge.textContent = `${comboCount} COMBO!`;
+      comboBadge.classList.add('visible');
+
+      // 타격 이펙트 텍스트 띄우기
+      spawnFloatingText(x, y, `${currentWeapon.fx} +${power}`);
+
+      clearTimeout(comboTimer);
+      comboTimer = setTimeout(() => {
+        comboCount = 0;
+        comboBadge.classList.remove('visible');
+      }, 1500);
+
+      clearTimeout(faceResetTimer);
+      faceResetTimer = setTimeout(() => {
+        targetFace.textContent = '😎';
+        targetSpeech.textContent = '"이제 안 때리나...?"';
+      }, 2200);
+
+      syncStatus.textContent = `미저장 타격 +${pendingHits}대 (자동 저장 대기)`;
+      clearTimeout(syncTimer);
+      if (pendingHits >= 25) {
+        flushHits();
+      } else {
+        syncTimer = setTimeout(flushHits, 1300);
+      }
+    });
+
+    function renderRanking(ranking) {
+      if (!ranking || ranking.length === 0) {
+        rankingList.innerHTML = '<div class="empty-state">아직 현서를 때린 사람이 없습니다. 첫 타격의 주인공이 되어보세요!</div>';
+        return;
+      }
+
+      const medals = ['🥇', '🥈', '🥉'];
+      rankingList.innerHTML = ranking.map((row, idx) => `
+        <div class="rank-item">
+          <div class="rank-left">
+            <span class="rank-medal">${medals[idx] || `${idx + 1}위`}</span>
+            <span class="rank-name">${escapeHtml(row.nickname)}</span>
+          </div>
+          <span class="rank-hits">${Number(row.hits).toLocaleString()}대</span>
+        </div>
+      `).join('');
+    }
+
+    function loadHitStats() {
+      refreshRankBtn.disabled = true;
+      refreshRankBtn.textContent = '불러오는 중...';
+
+      google.script.run
+        .withSuccessHandler(stats => {
+          serverTotalHits = stats.totalHits || 0;
+          updateHitCounters();
+          renderRanking(stats.ranking || []);
+          refreshRankBtn.disabled = false;
+          refreshRankBtn.textContent = '랭킹 새로고침';
+        })
+        .withFailureHandler(err => {
+          rankingList.innerHTML = `<div class="empty-state">랭킹을 불러오지 못했습니다: ${escapeHtml(err.message)}</div>`;
+          refreshRankBtn.disabled = false;
+          refreshRankBtn.textContent = '랭킹 새로고침';
+        })
+        .getHitStats();
+    }
+
+    refreshRankBtn.addEventListener('click', () => {
+      flushHits();
+      loadHitStats();
+    });
+
+    window.addEventListener('beforeunload', () => {
+      if (pendingHits > 0) flushHits();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadIdeas();
+      loadHitStats();
+    });
   </script>
 </body>
 </html>
